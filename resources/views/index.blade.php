@@ -44,7 +44,9 @@
 <script>
     $(document).ready(function () {
         $('#search').click(function (event) {
-            if (!$('input[name="gameMode"]:checked').val() || !$('#gameName').val()) {
+            let name = $('#gameName').val(),
+                mode = $('input[name="gameMode"]:checked').val();
+            if (!mode || !name) {
                 $('#results').html('Please enter all fields.');
                 return;
             }
@@ -60,10 +62,10 @@
             });
             $.ajax({
                 url: "{{ route('game.search') }}",
-                method: 'POST',
+                method: 'GET',
                 data: {
-                    gameName: $('#gameName').val(),
-                    gameMode: $('input[name="gameMode"]:checked').val(),
+                    gameName: name,
+                    gameMode: mode,
                 },
                 success: function (data) {
                     let games = data.gameList;
@@ -75,6 +77,9 @@
                                 `  <div class="card-body">\n` +
                                 `    <h5 class="card-title">${game.name}</h5>\n` +
                                 `    <p class="card-text"><small class="text-muted">${game.subCategory}</small></p>\n` +
+                                `    <div class="d-flex justify-content-center">` +
+                                `        <button class="btn btn-primary">Play</button>\n` +
+                                `    </div>\n` +
                                 `  </div>\n` +
                                 `</div>`);
                         }

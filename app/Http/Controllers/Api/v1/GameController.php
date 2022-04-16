@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\SearchGamesRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
@@ -13,22 +14,20 @@ class GameController extends Controller
 
         $allGames = json_decode(file_get_contents(public_path() . "/games.json"), true);
 
-        $games = [];
+        $games = $allGames['games']['instant'];
+        $results = [];
 
         $gameName = strtolower($request->get('gameName'));
-        $gameMode = $request->get('gameMode');
 
-        foreach ($allGames['games']['instant'] as $game) {
+        foreach ($games as $game) {
             if (strpos(strtolower($game['name']), $gameName) !== false) {
-                array_push($games, $game);
+                array_push($results, $game);
             }
         }
 
-        $results = 1;
-
-        if ($results) {
+        if ($games) {
             return response()->json([
-                'gameList' => $games,
+                'gameList' => $results,
                 'success'  => true
             ]);
         } else {
@@ -38,8 +37,22 @@ class GameController extends Controller
         }
     }
 
-    // TODO: make dynamic choice for play mode options
-    public function getOptions(SearchGamesRequest $request)
+    public function store(Request $request)
+    {
+
+    }
+
+    public function show(Request $request)
+    {
+
+    }
+
+    public function update(Request $request)
+    {
+
+    }
+
+    public function destroy(Request $request)
     {
 
     }

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GameController;
+use App\Http\Controllers\Api\v1\GameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('search',[GameController::class, 'index'])->name('game.search');
+Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
+    Route::get('search',[GameController::class, 'index'])->name('game.search');
+});
