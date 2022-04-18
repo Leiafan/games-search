@@ -76,7 +76,7 @@
                                 `  <img src="${game.images.default}" class="card-img-top">\n` +
                                 `  <div class="card-body">\n` +
                                 `    <h5 class="card-title">${game.name}</h5>\n` +
-                                `    <p class="card-text"><small class="text-muted">${game.subCategory}</small></p>\n` +
+                                `    <p class="card-text"><small class="text-muted">${game.mainCategory}, ${game.subCategory}</small></p>\n` +
                                 `    <div class="d-flex justify-content-center">` +
                                 `        <button class="btn btn-primary">Play</button>\n` +
                                 `    </div>\n` +

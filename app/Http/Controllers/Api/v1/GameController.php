@@ -12,10 +12,17 @@ class GameController extends Controller
     {
         $validated = $request->validated();
 
-        $allGames = json_decode(file_get_contents(public_path() . "/games.json"), true);
+        $gamesData = json_decode(file_get_contents(public_path() . "/games.json"), true);
 
-        $games = $allGames['games']['instant'];
-        $results = [];
+        list (
+            $games,
+            $categories,
+            $results,
+            ) = [
+            $gamesData['games']['instant'],
+            $gamesData['categories']['mainCategories'],
+            [],
+        ];
 
         $gameName = strtolower($request->get('gameName'));
 
@@ -24,6 +31,23 @@ class GameController extends Controller
                 array_push($results, $game);
             }
         }
+
+        // TODO: optimize structure
+        for ($num = 0; $num < count($results); $num++) {
+            foreach ($categories as $category) {
+                foreach ($category['subCategories'] as $subCategory) {
+                    if (in_array($results[$num]['id'], $subCategory['instantGamesOrder'])) {
+                        $results[$num]['subCategory'] = $subCategory['name'];
+                        $results[$num]['mainCategory'] = $category['name'];
+                        continue;
+                    }
+                }
+            }
+        }
+
+        usort($results, function ($a, $b) {
+           return $b['mainCategory'] <=> $a['mainCategory'];
+        });
 
         if ($games) {
             return response()->json([
